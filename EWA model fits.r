@@ -4,8 +4,8 @@ require(rstan)
 
 #load data
 setwd("~/Dropbox/Panama Data/Panama Shared/github stuff") #set your local diirectory to wherever these files are
-d <- read.csv("~/panama_data_14days.csv" , header=TRUE)
-mono_index <- read.csv("~/mono_indexing.csv")
+d <- read.csv("panama_data_14days.csv" , header=TRUE)
+mono_index <- read.csv("mono_indexing.csv")
 
 mono_index$mono <- mono_index$monos
 ages <- subset(mono_index, select=c(yob,mono) )
