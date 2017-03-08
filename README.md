@@ -7,8 +7,8 @@ This folder includes rstan code, graphing code, data simulations, and data for B
 
 3) To fit global model look at "EWA model fits.r." It also contains code to recreate several figures.
 
-4)"mono_indexing.csv" contains information for recreting several figures.
+4)"mono_indexing.csv" contains information for recreating several figures.
 
 5)"EWA_simulations_git.R" contains data simulation code. 
 
-6)"PN_social_combo.stan" is model for simulation
+6)"PN_social_combo.stan" is model for simulation.
