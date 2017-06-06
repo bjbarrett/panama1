@@ -54,7 +54,7 @@ traceplot(fit_global_age, pars=c("sigma"))
 
 post <- extract(fit_global_age) #extract posterior samples from model
 
-###########main effects posterior graphs##################
+###########main effects posterior graphs aka fig s1##################
 cairo_pdf("Main_effects_postgraphs.pdf",height=8,width=8)
 par(mfrow=c(3,3), oma = c(0, 0, 0, 0) , mar=c(3,.5,2,.5))
 par(cex = 0.6)
@@ -115,7 +115,7 @@ curve( dexp( x , rate=1) , lty=2 , add=TRUE , col="black" )
 
 dev.off()
 
-##########estimates of sigma graph########################
+##########estimates of sigma graph aka fig s2########################
 cairo_pdf("varef_sigma.pdf",height=4,width=7.5)
 
 col.sig <- c("cornflowerblue","cornflowerblue","red", "orange" , "orange", "orange" , "orange" , "orange" )
@@ -132,7 +132,7 @@ for (i in 1:8){
 dev.off()
 
 
-##########################phi age effects graph################
+##########################phi age effects graph fig 3a################
 
 post <- extract(fit_global_age)
 vfphi <- matrix(0,nrow=length(post$lambda),ncol=23)
@@ -168,7 +168,7 @@ lines(age.seq , pred.mean , lw=2)
 dev.off()
 
 
-##############gamma age effects graph###################
+##############gamma age effects graph fig 3b###################
 
 vfgamma <- matrix(0,nrow=length(post$lambda),ncol=23)
 varefgamma <- rep(0,23)
