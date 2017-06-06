@@ -133,7 +133,6 @@ dev.off()
 
 
 ##########################phi age effects graph fig 3a################
-
 post <- extract(fit_global_age)
 vfphi <- matrix(0,nrow=length(post$lambda),ncol=23)
 varefphi <- rep(0,23)
@@ -144,13 +143,13 @@ rando.samps <- sample(1:nrow(post$lambda), size=100, replace = FALSE, prob = NUL
      
      sample.int(n, size = n, replace = FALSE, prob = NULL)
 cairo_pdf("phi_age_varef.pdf", width=8 , height=8)
-par(mar=c(5,5,1,1))
-plot(varefphi~ ages$age.c , ylab="attraction toward new experience (\u0278)" , xlab="age (years)" , pch=19 , col="orange" ,xlim=c( (min(ages$age.c)-1) , (max(ages$age.c) + 2)), ylim=c(0,.6) , cex=1.5 , cex.lab=1.7  , xaxt="n" , yaxt="n" , axes=FALSE)
+par(mar=c(5,5,0.5,0.5))
+plot(varefphi~ ages$age.c , ylab="attraction toward new experience (\u0278)" , xlab="age (years)" , pch=19 , col="orange" ,xlim=c( (min(ages$age.c)-1) , (max(ages$age.c) + 2)), ylim=c(0,.6) , cex=1.5 , cex.lab=2.4  , xaxt="n" , yaxt="n" , axes=FALSE)
 
-axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 5) , labels=seq(from=0 , to=25 , by=5), tck=-0.02)
-axis(2, at = seq(from=0 , to=0.6, by = 0.2) , tck=-0.02 )
-axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 1 ), labels=F  , tck=-0.01)
-axis(2, at = seq(from=0 , to=0.6, by = 0.1) ,tck=-0.01 , labels=F )
+axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 5) , labels=seq(from=0 , to=25 , by=5), tck=-0.02 , cex.axis=1.5)
+axis(2, at = seq(from=0 , to=0.6, by = 0.2) , tck=-0.02 , cex.axis=1.5)
+axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 1 ), labels=F  , tck=-0.01, cex.axis=1.5)
+axis(2, at = seq(from=0 , to=0.6, by = 0.1) ,tck=-0.01 , labels=F , cex.axis=1.5)
 
 age.seq <- seq(from=min(ages$age.c) , to=max(ages$age.c) , length=25 )
 pred.mean <- sapply(age.seq , function(z)
@@ -177,12 +176,12 @@ for(i in 1:23){varefgamma[i] <- mean(vfgamma[,i])}
 lines(age.seq , pred.mean , lw=2)
 
 cairo_pdf("gamma_age_varef.pdf", width=8 , height=8)
-par(mar=c(5,5,1,1))
-plot(varefgamma~ ages$age.c , ylab="weight given to social information (\u03B3)" , xlab="age (years)" , pch=19 , col="cornflowerblue" ,xlim=c( (min(ages$age.c)-1) , (max(ages$age.c) + 2)), ylim=c(0,.6) , cex=1.7 , cex.lab=1.7  , xaxt="n" , yaxt="n" , axes=FALSE )
-axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 5) , labels=seq(from=0 , to=25 , by=5), tck=-0.02)
-axis(2, at = seq(from=0 , to=0.6, by = 0.2) , tck=-0.02 )
-axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 1 ), labels=F  , tck=-0.01)
-axis(2, at = seq(from=0 , to=0.6, by = 0.1) ,tck=-0.01 , labels=F )
+par(mar=c(5,5,0.5,0.5))
+plot(varefgamma~ ages$age.c , ylab="weight given to social information (\u03B3)" , xlab="age (years)" , pch=19 , col="cornflowerblue" ,xlim=c( (min(ages$age.c)-1) , (max(ages$age.c) + 2)), ylim=c(0,.6) , cex=1.7 , cex.lab=2.4  , xaxt="n" , yaxt="n" , axes=FALSE )
+axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 5) , labels=seq(from=0 , to=25 , by=5), tck=-0.02, cex.axis=1.5)
+axis(2, at = seq(from=0 , to=0.6, by = 0.2) , tck=-0.02 , cex.axis=1.5)
+axis(1, at = seq(from=(min(ages$age.c)-1) , to=(max(ages$age.c) + 2), by = 1 ), labels=F  , tck=-0.01, cex.axis=1.5)
+axis(2, at = seq(from=0 , to=0.6, by = 0.1) ,tck=-0.01 , labels=F , cex.axis=1.5)
 age.seq <- seq(from=min(ages$age.c) , to=max(ages$age.c) , length=25 )
 pred.mean <- sapply(age.seq , function(z)
 	 mean(logistic(post$mu[,2] + post$b_age[,2]*z) ))
