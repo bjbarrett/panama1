@@ -41,11 +41,37 @@ d1$press <- d1$press / max(d1$press)
 
 #parameter list to save in posterior extractions
 parlistglobalage=c("lambda" ,"a_id" , "mu" ,"Bpay","Bkin","Bpres","Bcoho","Byob", "fconf", "dev" , "log_lik" , "b_age" , "Rho" , "sigma" )
+parlistpay=c("lambda" ,"a_id" , "mu" ,"Bpay", "dev" , "log_lik", "Rho" , "sigma")
+parlistfreq=c("lambda" ,"a_id" , "mu" ,"fconf", "dev" , "log_lik", "Rho" , "sigma")
+parlistind=c("lambda" ,"a_id" , "mu" , "dev" , "log_lik", "Rho" , "sigma")
 
-#global model assuming file is in working directory
+
+
+#global model with age assuming file is in working directory
 fit_global_age <- stan( file = 'PN_social_global_age.stan', data = d1 , 
 	iter = 1000, warmup=500 , chains=3, cores=3,
 	control=list( adapt_delta=0.98 ) ,pars=parlistglobalage )
+
+###simpler models not including age
+
+#individual learning
+fit_i <- stan( file = 'PN_indiv.stan', data = d3 , 
+	iter = 3000, warmup=1500, chains=1, cores=1, pars=parlistind,
+	control=list( adapt_delta=0.98 ) )
+#frequency dependent-sea
+fit_freq <- stan( file = 'PN_social_freq.stan', data = d4 , 
+	iter = 3000, warmup=1500 , chains=3, cores=3, pars=parlistfreq,
+	control=list( adapt_delta=0.98 ) )
+#payoff/cue bias 
+fit_pay <- stan( file = 'PN_social_pay.stan', data = d4 , 
+	iter = 3000, warmup=1500 , chains=1, cores=1, pars=parlistpay,	
+	control=list( adapt_delta=0.98 ) )
+
+#frequency-dependent no age effects
+
+#payoff/cur biased no age effects
+
+#individual learning no age effects
 
 ###traceplots
 traceplot(fit_global_age, pars=c("mu" , "lambda"))
