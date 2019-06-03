@@ -15,7 +15,7 @@ exp(x)/sum(exp(x))
 } #softmax function to simplify code
 
 
-d1$fruit_index <- d$X
+d1$fruit_index <- d$fruit_index
 d1$date_index <- d$date_index
 Preds = array(0,dim=c(nrow(d),7,23)) #predictions for all individuals, all techniques, across all timesteps
 Preds2 = array(0,dim=c(nrow(d),7)) ##predictions for all individuals, all techniques, at times when they foraged
