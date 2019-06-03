@@ -14,6 +14,32 @@ Softmax <- function(x){
 exp(x)/sum(exp(x))
 } #softmax function to simplify code
 
+##use same data list that was used when fitting stan model
+d_global <- list(
+    N = nrow(d),                                                                        #length of dataset
+    J = length( unique(d$mono_index) ),                                                 #number of individuals
+    K=max(d$tech_index),                                                                #number of processing techniques
+    tech = d$tech_index,                                                                #technique index
+    y = cbind( d$y1 , d$y2 , d$y3 , d$y4 , d$y5 , d$y6 , d$y7 ),                        #individual processing times for all techniques at each bout N (individual payoff)
+    s = cbind(d$s1 , d$s2 , d$s3 , d$s4 ,d$s5 ,d$s6 , d$s7 ),                           #observed counts of all K techniques to individual J (frequency-dependence)
+    ps = cbind(d$ps1 , d$ps2 , d$ps3 , d$ps4 ,d$ps5 ,d$ps6 , d$ps7 ),                   #observed mean payoffs of all K techniques to individual J (payoff bias)
+    ks = cbind(d$ks1 , d$ks2 , d$ks3 , d$ks4 ,d$ks5 ,d$ks6 , d$ks7 ),                   #observed matrilineal kin cues of all K techniques to individual J (matrilineal kin-bias)
+    cohos = cbind(d$cos1 , d$cos2 , d$cos3 , d$cos4 ,d$cos5 ,d$cos6 , d$cos7 ),         #observed cohort cues of all K techniques to individual J (age-cohort/similarity bias)
+    yobs = cbind(d$Yobs1 , d$Yobs2 , d$Yobs3 , d$Yobs4 ,d$Yobs5 ,d$Yobs6 , d$Yobs7 ),   #observed age cues of all K techniques to individual J (age-bias)
+    press = cbind(d$prs1 , d$prs2 , d$prs3 , d$prs4 ,d$prs5 ,d$prs6 , d$prs7 ),         #observed rank cues of all K techniques to individual J (age-bias)
+    bout = d$forg_bout,#bout is forg index here                                         #processing bout unique to individual J
+    id = as.integer(as.factor(d$mono_index)),                                           #individual ID
+    N_effects=8,                                                                        #number of parameters to estimates
+    age=d$age.c                                                                         #centered age of individuals
+)
+
+#scale payoffs/cues by dividing by max value
+d1 <- d_global
+d1$yobs <- d1$yobs / max(d1$yobs)
+d1$cohos <- d1$cohos / max(d1$cohos)
+d1$ks <- d1$ks / max(d1$ks)
+d1$ps <- d1$ps / max(d1$ps)
+d1$press <- d1$press / max(d1$press)
 
 d1$fruit_index <- d$fruit_index
 d1$date_index <- d$date_index
@@ -113,13 +139,70 @@ mat[,8] <- c(1:75)
 }
 
 
-
-
 ##plots where probability is constant between fruits
 #Preds[d1$fruit_index[i],j,d1$id[i]]
 mono_index_all <- read.csv("~/Dropbox/Panama Data/mono_indexing_all.csv") #with HF and WZ
 mono_index_all$mono <- mono_index_all$monos
 mono_index <- mono_index_all
+
+##below plot was not in paper but plots time series of behavioral change against all foraging behaviors, useful for analyst
+
+pdf("individual_panama_predictions_fruit_pred_all.pdf",width=11,height=8.5) 
+
+par(mfrow=c(4, 1) , oma = c(5,3,1,0) , mar=c(3,3,1.5,0))
+par(cex = 0.6)
+par(tcl = -0.25)
+par(mgp = c(2, 0.6, 0))
+
+for(k in 1:23){
+    plot(d1$date_index~d1$fruit_index, ylim=c(0,1.2) , col="white" , xlab="" , ylab="" , cex.lab=.8 ,main=mono_index$mono[k], axes=FALSE, cex.lab=1.1)
+           # legend("top", inset=0.01, c(tech_id) , fill=col_index, horiz=TRUE,cex=0.6,bty = "n")
+    axis(1, at = seq(from=0 , to=1450, by = 100) , tck=-0.03)
+    axis(2, at = seq(from=0 , to=1 , by = 0.2) , tck=-0.03 )
+    axis(1, at = seq(from=0 , to=1450, by = 25) , tck=-0.015 , labels=FALSE )
+    axis(2, at = seq(from=0 , to=1 , by = 0.1) , tck=-0.015 , labels=FALSE)
+    for (j in 1:7){    
+        for (i in 1:1441){
+           points(Preds[i,j,k]~i, col=col.alpha(col_index[j], alpha=0.99) , pch=20 , cex=0.5 )
+        }
+        lls <- d$timestep[d$fruit_index<1500 & d$tech_index==j & d$open==1 & d$mono_index==k]
+        llf <- d$timestep[d$fruit_index<1500 & d$tech_index==j & d$open==0 & d$mono_index==k]
+        llo <-  d$timestep[grepl(mono_index$monos[k],d[,"RCI"])==TRUE & d$tech_index==j]
+
+            #points( mono_index$yob_order[j] ~ d$timestep[i]  , pch=15 , cex=2 , col=col.alpha("black" , .2) )
+        points(llo,rep(1.15,length(llo))  , pch="*" , cex=1.2 , col=col_index[j] )
+        points(lls,rep(1.05,length(lls)), pch=23 , cex=0.75 , col=col_index[j] , bg=col.alpha(col_index[j] , 0.5) )
+        points(llf,rep(1.1,length(llf)), pch=4 , cex=0.75 , col=col_index[j] , bg=col.alpha(col_index[j] , 0.5) )    
+    
+    }
+}
+
+mtext("fruit processing event time", side = 1, outer = TRUE, cex = 1.5, line = .1)
+mtext("probability of choosing technique", side = 2, outer = TRUE, cex = 1.5, line = .1)
+
+legend(x=200 , y=-.5, inset= -.1, tech_id , fill=col_index, border=col_index ,horiz=TRUE,cex=1, bty = "n", xpd=NA)
+legend(x=500 , y=-.65, inset= -.1, c(" tech succesful", "tech failure", "observed tech") , col=1, horiz=TRUE, cex=1, pch=c(23,4,8), xpd=NA , bty="n" , bg=col.alpha("black" , 0.5) )
+
+dev.off()
+
+
+PredsPop = array(0,dim=c(75,7))
+PredsPop2 = array(0,dim=c(75,7))
+PredsMono = array(0,dim=c(75,7,23))
+
+for(i in 1:75){
+    for(k in 1:23){
+        for (j in 1:7){
+            PredsMono[i,j,k] <- mean(Preds[d1$fruit_index[d1$date_index==i & d1$tech==j],j,k])
+        }
+    }
+}
+
+for(i in 1:75){
+        for (j in 1:7){
+            PredsPop[i,j] <- mean(Preds[d1$fruit_index[d1$date_index==i & d1$tech==j],j,])
+        }
+    }
 
 
 pdf("individual_panama_predictions2.pdf",width=8.5,height=11) 
