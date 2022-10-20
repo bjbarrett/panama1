@@ -1,28 +1,19 @@
-# This CITATION.cff file was generated with cffinit.
-# Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: >-
+title: 
   Data and Code for Barrett et al:  Payoff-biased
   social learning in a wild primate
-message: >-
-  If you use this dataset or code, please cite it
-  using the metadata from this file. The corresponding paper is at https://doi.org/10.1098/rspb.2017.0358
-type: code and dataset
+message: "If you use this dataset or code, please cite it using the metadata from this file. The corresponding paper is at https://doi.org/10.1098/rspb.2017.0358"
 authors:
-  - given-names: Brendan J
-    family-names: Barrett
-    email: bjb5009@gmail.com
-    affiliation: UC Davis
+  - given-names: "Brendan J"
+    family-names: "Barrett"
     orcid: 'https://orcid.org/0000-0002-2725-2385'
-  - given-names: 'Richard L '
-    family-names: McElreath
-    email: mcelreath@ucdavis.edu
-    affiliation: UC Davis
-    orcid: 'https://orcid.org/0000-0002-0387-5377'
-  - given-names: Susan E
-    family-names: Perry
-    email: sperry@anthro.ucla.edu
-    affiliation: UCLA
-    orcid: 'https://orcid.org/0000-0001-5306-5383'
+  - given-names: "Richard L"
+    family-names: "McElreath"
+    orcid: "https://orcid.org/0000-0002-0387-5377"
+  - given-names: "Susan E"
+    family-names: "Perry"
+    orcid: "https://orcid.org/0000-0001-5306-5383"
   date-released: 2017-02-20
+  version: 1.0.0
+  url: "https://github.com/bjbarrett/panama1"
