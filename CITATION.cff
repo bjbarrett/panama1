@@ -1,8 +1,6 @@
-
 cff-version: 1.2.0
-title: 
-  Data and Code for Barrett et al:  Payoff-biased
-  social learning in a wild primate
+title: "Data and Code for Barrett et al:  Payoff-biased
+  social learning in a wild primate"
 message: "If you use this dataset or code, please cite it using the metadata from this file. The corresponding paper is at https://doi.org/10.1098/rspb.2017.0358"
 authors:
   - given-names: "Brendan J"
